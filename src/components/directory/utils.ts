@@ -15,7 +15,7 @@ function returnSearchInputData(usersDocs: DirectoryUserDocument[]) {
       acc.add(lastName);
 
       return acc;
-    }, new Set<string>())
+    }, new Set<string>()),
   );
 }
 
@@ -47,11 +47,15 @@ function filterEmployees({
   return department === "All Departments"
     ? employees
     : employees.filter((employee) => {
-        return isStoreLocationDisabled
-          ? employee.department === department
-          : employee.department === department &&
-              employee.storeLocation === storeLocation;
-      });
+      return isStoreLocationDisabled
+        ? employee.department === department
+        : employee.department === department &&
+          employee.storeLocation === storeLocation;
+    });
 }
 
-export { filterEmployees, returnIsStoreLocationDisabled, returnSearchInputData };
+export {
+  filterEmployees,
+  returnIsStoreLocationDisabled,
+  returnSearchInputData,
+};

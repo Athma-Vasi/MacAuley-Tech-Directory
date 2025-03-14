@@ -45,13 +45,13 @@ type StoreLocationsWithDefaultKey = StoreLocation | "All Locations";
 
 type DirectoryDispatch =
   | {
-      action: DirectoryAction["setDepartment"];
-      payload: DepartmentsWithDefaultKey;
-    }
+    action: DirectoryAction["setDepartment"];
+    payload: DepartmentsWithDefaultKey;
+  }
   | {
-      action: DirectoryAction["setStoreLocation"];
-      payload: StoreLocationsWithDefaultKey;
-    };
+    action: DirectoryAction["setStoreLocation"];
+    payload: StoreLocationsWithDefaultKey;
+  };
 
 export type {
   DepartmentsWithDefaultKey,

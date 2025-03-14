@@ -1,5 +1,6 @@
 import {
-  Country,Department,
+  Country,
+  Department,
   JobPosition,
   PhoneNumber,
   Province,
@@ -7,7 +8,6 @@ import {
   StoreLocation,
   UserRole,
 } from "../../types";
-
 
 const DIRECTORY_EMPLOYEE_DATA: EmployeeDoc[] = [
   {

@@ -1,15 +1,13 @@
-import { Container } from "@mantine/core";
 import { useReducer } from "react";
 
 import {
   COLORS_SWATCHES,
   DEPARTMENT_DATA,
   STORE_LOCATION_DATA,
-} from "../../constants/data";
-import { useGlobalState } from "../../hooks";
+} from "../../constants";
+
 import type { CheckboxRadioSelectData } from "../../types";
-import { returnThemeColors } from "../../utils";
-import { AccessibleSelectInput } from "../accessibleInputs/AccessibleSelectInput";
+
 import { D3Tree } from "../d3Tree/D3Tree";
 import { buildD3Tree } from "../d3Tree/utils";
 import { type DirectoryAction, directoryAction } from "./actions";
@@ -29,31 +27,46 @@ function Directory() {
   );
   const { department, storeLocation } = directoryState;
 
-  const {
-    globalState: { themeObject },
-  } = useGlobalState();
-  const {
-    generalColors: { themeColorShade },
-  } = returnThemeColors({ colorsSwatches: COLORS_SWATCHES, themeObject });
-
   const departmentData = [
     { label: "All Departments", value: "All Departments" },
     ...DEPARTMENT_DATA,
   ] as CheckboxRadioSelectData<DepartmentsWithDefaultKey>;
 
+  // const departmentSelectInput = (
+  //   <AccessibleSelectInput<
+  //     DirectoryAction["setDepartment"],
+  //     DepartmentsWithDefaultKey
+  //   >
+  //     attributes={{
+  //       data: departmentData,
+  //       name: "department",
+  //       value: department,
+  //       parentDispatch: directoryDispatch,
+  //       validValueAction: directoryAction.setDepartment,
+  //     }}
+  //   />
+  // );
+
   const departmentSelectInput = (
-    <AccessibleSelectInput<
-      DirectoryAction["setDepartment"],
-      DepartmentsWithDefaultKey
-    >
-      attributes={{
-        data: departmentData,
-        name: "department",
-        value: department,
-        parentDispatch: directoryDispatch,
-        validValueAction: directoryAction.setDepartment,
-      }}
-    />
+    <div>
+      <label htmlFor="department">Department</label>
+      <select
+      defaultValue="All Departments"
+        id="department"
+        name="department"
+        value={department}
+        onChange={(e) =>
+          directoryDispatch({
+            action: directoryAction.setDepartment,
+            payload:e.currentTarget.value as DepartmentsWithDefaultKey
+          }
+            )}
+      >
+        {departmentData.map((department) => (
+          <option value={department.value}>{department.label}</option>
+        ))}
+      </select>
+    </div>
   );
 
   const isStoreLocationDisabled = returnIsStoreLocationDisabled(department);
@@ -68,20 +81,39 @@ function Directory() {
       StoreLocationsWithDefaultKey
     >);
 
+  // const storeLocationSelectInput = (
+  //   <AccessibleSelectInput<
+  //     DirectoryAction["setStoreLocation"],
+  //     StoreLocationsWithDefaultKey
+  //   >
+  //     attributes={{
+  //       data: storeLocationData,
+  //       disabled: isStoreLocationDisabled,
+  //       name: "storeLocation",
+  //       value: storeLocation,
+  //       parentDispatch: directoryDispatch,
+  //       validValueAction: directoryAction.setStoreLocation,
+  //     }}
+  //   />
+  // );
+
   const storeLocationSelectInput = (
-    <AccessibleSelectInput<
-      DirectoryAction["setStoreLocation"],
-      StoreLocationsWithDefaultKey
-    >
-      attributes={{
-        data: storeLocationData,
-        disabled: isStoreLocationDisabled,
-        name: "storeLocation",
-        value: storeLocation,
-        parentDispatch: directoryDispatch,
-        validValueAction: directoryAction.setStoreLocation,
-      }}
-    />
+    <div>
+      <label htmlFor="storeLocation">Store Location</label>
+      <select 
+      defaultValue="All Locations"
+      disabled={isStoreLocationDisabled}
+      id="storeLocation" name="storeLocation" value={storeLocation} onChange={(e) =>
+          directoryDispatch({
+            action: directoryAction.setStoreLocation,
+            payload:e.currentTarget.value as StoreLocationsWithDefaultKey
+          }
+            )}>
+        {storeLocationData.map((storeLocation) => (
+          <option value={storeLocation.value}>{storeLocation.label}</option>
+        ))}
+      </select>
+    </div>
   );
 
   const filteredEmployees = filterEmployees({
@@ -91,18 +123,14 @@ function Directory() {
     storeLocation,
   });
 
-  console.log(buildD3Tree(filteredEmployees, themeColorShade));
-
-  const d3Tree = (
-    <D3Tree data={buildD3Tree(filteredEmployees, themeColorShade)} />
-  );
+  const d3Tree = <D3Tree data={buildD3Tree(filteredEmployees, "teal")} />;
 
   return (
-    <Container>
+    <div>
       {departmentSelectInput}
       {storeLocationSelectInput}
       {d3Tree}
-    </Container>
+    </div>
   );
 }
 

@@ -12,7 +12,7 @@ type TreeHelpers = {
 
 function createTreeHelpers(
   employees: Array<EmployeeDoc>,
-  nodeColor: string
+  nodeColor: string,
 ): TreeHelpers {
   const initialAcc = {
     nodeMap: new Map<number, D3TreeInput>(),
@@ -55,7 +55,7 @@ function createTreeHelpers(
 
 function buildD3Tree(
   employees: Array<EmployeeDoc>,
-  nodeColor: string
+  nodeColor: string,
 ): Array<D3TreeInput> {
   const { minOrgId, nodeMap } = createTreeHelpers(employees, nodeColor);
 
